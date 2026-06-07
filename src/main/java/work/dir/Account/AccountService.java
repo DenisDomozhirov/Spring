@@ -53,7 +53,7 @@ public class AccountService {
         if(amount > account.getMoneyAmount()) throw new IllegalArgumentException("Error! " +
                 "insufficient funds in the account id=%s, amount of money =%s, withdrawal attempt =%s"
                         .formatted(fromAccountID, account.getMoneyAmount(), amount));
-        account.setMoneyAmount(account.getMoneyAmount() + amount);
+        account.setMoneyAmount(account.getMoneyAmount() - amount);
     }
 
     public void deposit(Integer toAccountId, Integer amount){
@@ -85,8 +85,8 @@ public class AccountService {
                 .findFirst()
                 .orElseThrow();
 
-        var newAmmount = accountToTransferMoney.getMoneyAmount() + accountToClose.getMoneyAmount();
-        accountToTransferMoney.setMoneyAmount(newAmmount);
+        var newAmount = accountToTransferMoney.getMoneyAmount() + accountToClose.getMoneyAmount();
+        accountToTransferMoney.setMoneyAmount(newAmount);
         return accountToClose;
     }
 
@@ -98,13 +98,9 @@ public class AccountService {
         if(fromAccountId == toAccountId) throw new IllegalArgumentException("Error!" +
                 "source and target account id should be different!");
 
-        Account accountFrom = findAccountById(fromAccountId)
-                .orElseThrow(() -> new IllegalArgumentException("Error!" +
-                        " No such account with id: %s".formatted(fromAccountId)));
+        Account accountFrom = exceptionFindById(fromAccountId, "Account from!");
 
-        Account accountTo = findAccountById(toAccountId)
-                .orElseThrow(() -> new IllegalArgumentException("Error!" +
-                        " No such account with id: %s".formatted(toAccountId)));
+        Account accountTo = exceptionFindById(fromAccountId, "Account to!");
 
         accountFrom.setMoneyAmount(accountFrom.getMoneyAmount() - amount);
 
@@ -113,6 +109,11 @@ public class AccountService {
         accountTo.setMoneyAmount(accountTo.getMoneyAmount() + amountToTransfer);
     }
 
+    private Account exceptionFindById(int accountId, String whichAccount){
+        return findAccountById(accountId)
+                .orElseThrow(() -> new IllegalArgumentException("Error!" +
+                        " No such account with id: %s (%d)".formatted(accountId, whichAccount)));
+    }
 
     public void validatePositiveAccountId(Integer id, String fieldName){
         if(id == null || id <= 0) throw new IllegalArgumentException("Error! " + fieldName +

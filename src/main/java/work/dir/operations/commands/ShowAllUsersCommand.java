@@ -26,6 +26,6 @@ public class ShowAllUsersCommand implements OperationCommand {
 
     @Override
     public ConsoleOperationType getOperationType(){
-        return ConsoleOperationType.SHOW_ALLUSERS;
+        return ConsoleOperationType.SHOW_ALL_USERS;
     }
 }

@@ -23,8 +23,7 @@ public class AccountWithdrawCommand implements OperationCommand {
 
         int amount = consoleInput.readPositiveInt("Enter amount: ", "amount");
         accountService.withdraw(fromAccountId, amount);
-        System.out.println("Withdraw complete! From - " + fromAccountId +
-                ", amount = " + amount);
+        System.out.println("Withdraw complete! From - %s, amount = %d".formatted(fromAccountId, amount));
     }
 
     @Override

@@ -2,7 +2,7 @@ package work.dir.operations;
 
 public enum ConsoleOperationType {
     USER_CREATE,
-    SHOW_ALLUSERS,
+    SHOW_ALL_USERS,
     ACCOUNT_CREATE,
     ACCOUNT_DEPOSIT,
     ACCOUNT_WITHDRAW,
